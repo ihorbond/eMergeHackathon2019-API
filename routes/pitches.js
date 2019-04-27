@@ -64,6 +64,10 @@ router.post('/add', upload.single('file'), async (req, res, next) => {
 
         picture = `../public/uploads/${req.file.filename}`;
     }
+    else if (req.body.titlePic) {
+        picture = req.body.titlePic;
+    }
+
     else {
         picture = './public/images/default.jpg';
     }
