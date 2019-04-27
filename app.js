@@ -1,23 +1,27 @@
 ﻿'use strict';
-var debug = require('debug');
-var express = require('express');
-var path = require('path');
-//var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const debug = require('debug');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
 const http = require('http');
-require('multer');
+const cors = require('cors');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+const routes = require('./routes/index');
 const pitches = require('./routes/pitches');
+const competitions = require('./routes/competitions');
 
 require('dotenv').config();
 require('./configs/database');
 
 var app = express();
+
+ app.use(cors({
+   credentials: true,
+   origin: [ 'http://localhost:4200' ]
+ }));
 
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -38,7 +42,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/competitions', competitions);
 app.use('/pitches', pitches);
 
 // catch 404 and forward to error handler
